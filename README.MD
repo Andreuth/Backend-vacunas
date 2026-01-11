@@ -1,134 +1,52 @@
-🧩 Sistema de Vacunación – BACKEND (FastAPI)
+SISCONI – Backend
 
-Este backend implementa una API REST para gestionar un sistema de vacunación.
-Incluye autenticación con JWT, arquitectura por capas, conexión a PostgreSQL y migraciones con Alembic.
+Backend del sistema SISCONI (Sistema de Control de Vacunación Infantil), desarrollado con FastAPI y PostgreSQL.
 
-🚀 Tecnologías utilizadas
+Permite la gestión de:
+- Usuarios (ADMIN, PEDIATRA, REPRESENTANTE)
+- Niños y representantes
+- Visitas médicas (peso, talla)
+- Vacunas y esquema por dosis
+- Historial de vacunación
+- Próximas vacunas automáticas
 
-Python 3.10+
+TECNOLOGÍAS
+- Python 3.10+
+- FastAPI
+- SQLAlchemy
+- Alembic
+- PostgreSQL
+- JWT
 
-FastAPI
+INSTALACIÓN
+1. Crear entorno virtual
+   python -m venv venv
 
-SQLAlchemy
+2. Activar entorno
+   Windows: venv\Scripts\activate
+   Linux/Mac: source venv/bin/activate
 
-PostgreSQL
+3. Instalar dependencias
+   pip install -r requirements.txt
 
-Uvicorn
-
-Alembic
-
-JWT (python-jose)
-
-Passlib (bcrypt)
-
-python-multipart
-
-📁 Estructura del proyecto
-Backend/
-│
-├── app/
-│   ├── core/          # Configuración global
-│   ├── models/        # Modelos SQLAlchemy
-│   ├── schemas/       # Pydantic Schemas
-│   ├── services/      # Lógica de negocio
-│   ├── security/      # JWT + hashing
-│   ├── routers/       # Endpoints
-│   ├── database.py    # Conexión DB
-│   └── main.py        # Punto de entrada
-│
-├── alembic/           # Migraciones
-├── alembic.ini
-├── requirements.txt
-└── .env
-
-⚙️ Instalación
-1️⃣ Crear entorno virtual
-cd Backend
-python -m venv venv
-venv\Scripts\activate
-
-2️⃣ Instalar dependencias
-pip install -r requirements.txt
-
-🔧 Configuración
-
-Crear archivo .env en la carpeta Backend:
-
-DATABASE_URL=postgresql://postgres:TU_PASSWORD@localhost:5432/vacunacion
-
-JWT_SECRET_KEY=super_secreto
-JWT_ALGORITHM=HS256
+CONFIGURACIÓN
+Crear archivo .env con:
+DATABASE_URL=postgresql://usuario:password@localhost:5432/sisconi_db
+SECRET_KEY=supersecreto
+ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 
-
-⚠️ Cambiar TU_PASSWORD por tu contraseña real de PostgreSQL.
-
-🗄️ Migraciones con Alembic
-Inicializar BD
-
-En PostgreSQL:
-
-CREATE DATABASE vacunacion;
-
-Ejecutar migraciones
-alembic revision --autogenerate -m "init schema"
-alembic upgrade head
-
-▶️ Iniciar el servidor
+EJECUCIÓN
 uvicorn app.main:app --reload
 
+DOCUMENTACIÓN
+http://127.0.0.1:8000/docs
 
-Abrir navegador:
+ROLES
+ADMIN: administra usuarios y vacunas
+PEDIATRA: registra niños, visitas y vacunas
+REPRESENTANTE: consulta historial
 
-👉 http://127.0.0.1:8000/docs
+NOTA
+El administrador no puede cambiar roles, solo editar datos básicos.
 
-(API interactiva Swagger)
-
-🔐 Autenticación
-POST /auth/login
-
-Tipo: multipart/form-data
-
-Campos:
-
-username → número de documento
-
-password → contraseña
-
-Respuesta:
-
-{
-  "access_token": "eyJh...",
-  "token_type": "bearer"
-}
-
-
-Luego usar el botón Authorize en Swagger.
-
-📌 Entidad funcional requerida: PERSONAS
-Endpoints:
-Método	Endpoint	Descripción
-POST	/personas/	Crear persona
-GET	/personas/	Listar personas
-GET	/personas/{id}	Obtener persona
-PUT	/personas/{id}	Actualizar
-DELETE	/personas/{id}	Desactivar
-🛡️ Protección de rutas
-
-Las rutas GET/PUT/DELETE requieren token:
-Authorization: Bearer <token>
-
-🧾 Estado del backend
-
-✔ Base de datos completa
-✔ JWT login
-✔ CRUD Persona funcional
-✔ Migraciones Alembic
-✔ Arquitectura por capas
-✔ Listo para consumo desde frontend
-
-✍️ Autores / Grupo
-
-(Coloca nombres, paralelo, profesor, fecha)
-
-📘 FIN DEL README DEL BACKEND

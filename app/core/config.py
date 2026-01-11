@@ -1,23 +1,22 @@
-import os
-from dotenv import load_dotenv
+from pydantic_settings import BaseSettings
 
-# Cargar las variables del archivo .env ubicado en la carpeta Backend
-load_dotenv()
+class Settings(BaseSettings):
+    APP_NAME: str = "SISCONI"
+    ENV: str = "dev"
+    SECRET_KEY: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 120
 
-class Settings:
-    def __init__(self) -> None:
-        # URL de la base de datos
-        self.database_url: str = os.getenv("DATABASE_URL", "")
+    DB_HOST: str
+    DB_PORT: int
+    DB_NAME: str
+    DB_USER: str
+    DB_PASSWORD: str
 
-        # JWT
-        self.jwt_secret_key: str = os.getenv("JWT_SECRET_KEY", "cambia_esta_clave")
-        self.jwt_algorithm: str = os.getenv("JWT_ALGORITHM", "HS256")
+    @property
+    def DATABASE_URL(self) -> str:
+        return f"postgresql+psycopg2://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
-        # Ojo: viene como string, lo convertimos a int con un valor por defecto
-        self.access_token_expire_minutes: int = int(
-            os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60")
-        )
+    class Config:
+        env_file = ".env"
 
 settings = Settings()
-
-
